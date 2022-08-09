@@ -39,6 +39,6 @@ export class FuncionariosControlle {
 
   @Delete('funcionario/:id')
   async delete(@Param('id') id: string): Promise<FuncionarioModel> {
-    return this.funcionarioService.delte({ id: Number(id) });
+    return this.funcionarioService.delete({ id: Number(id) });
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Visitas } from '@prisma/client';
+import { VisitasDTO } from 'src/dto/Visitas.dto';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -12,11 +13,17 @@ export class VisitasService {
     });
   }
 
-  async getAll(): Promise<Visitas[]> {
-    return this.prisma.visitas.findMany();
+ async getAll(): Promise<Visitas[]> {
+    return this.prisma.visitas.findMany({
+      include: {
+         funcionario: true,
+         pessoa: true
+
+      },
+    });
   }
 
-  async create(data: Prisma.VisitasCreateInput): Promise<Visitas> {
+  async create(data: VisitasDTO): Promise<Visitas> {
     return this.prisma.visitas.create({
       data,
     });
@@ -24,14 +31,23 @@ export class VisitasService {
 
   async update(params: {
     where: Prisma.VisitasWhereUniqueInput;
-    data: Prisma.VisitasUpdateInput;
+    data: VisitasDTO;
   }): Promise<Visitas> {
     const { where, data } = params;
     return this.prisma.visitas.update({
-      data,
+      data:{
+        funcionario: true
+      },
       where,
     });
   }
+
+  // async atualizar(data: VisitasDTO, id): Promise<Visitas> {
+  //     return this.prisma.visitas.update({
+  //         where: id,
+  //         data
+  //     })
+  // }
 
   async delte(where: Prisma.VisitasWhereUniqueInput): Promise<Visitas> {
     return this.prisma.visitas.delete({

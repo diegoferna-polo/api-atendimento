@@ -16,17 +16,17 @@ model Funcionario {
   lastName String
   local    String
   ativo    Boolean
-  visitas  Visitas[]
+  pessoa   Visitas[]
 }
 
 model Pessoa {
-  id       Int       @id @default(autoincrement())
-  name     String    @db.VarChar(60)
-  lastName String    @db.VarChar(60)
-  email    String    @unique
-  local    String
-  ativo    Boolean
-  visitas  Visitas[]
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(60)
+  lastName    String    @db.VarChar(60)
+  email       String    @unique
+  local       String
+  ativo       Boolean
+  funcionario Visitas[]
 }
 
 model Visitas {
@@ -34,8 +34,9 @@ model Visitas {
   note          String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  ativo         Boolean
   funcionario   Funcionario @relation(fields: [idFuncionario], references: [id])
-  pessoa        Pessoa      @relation(fields: [idPessoa], references: [id])
   idFuncionario Int
+  pessoa        Pessoa      @relation(fields: [idPessoa], references: [id])
   idPessoa      Int
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Funcionario } from '@prisma/client';
+import { FuncionarioDTO } from 'src/dto/Funcionario.dto';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -18,10 +19,19 @@ export class FuncionarioService {
     return this.prisma.funcionario.findMany();
   }
 
-  async create(data: Prisma.FuncionarioCreateInput): Promise<Funcionario> {
-    return this.prisma.funcionario.create({
-      data,
-    });
+  async create(data: FuncionarioDTO): Promise<Funcionario> {
+    try {
+      const funcionario = await this.prisma.funcionario.create({
+        data,
+      });
+
+      const eita = this.prisma.visitas.create
+      console.log(funcionario);
+      return funcionario;
+    } catch (error) {
+      console.log(error.message);
+    }
+
   }
 
   async update(params: {
@@ -35,7 +45,9 @@ export class FuncionarioService {
     });
   }
 
-  async delte(where: Prisma.FuncionarioWhereUniqueInput): Promise<Funcionario> {
+  async delete(
+    where: Prisma.FuncionarioWhereUniqueInput,
+  ): Promise<Funcionario> {
     return this.prisma.funcionario.delete({
       where,
     });
